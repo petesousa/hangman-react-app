@@ -10,22 +10,30 @@ export default function Register({ createPlayer }) {
     setUsername(username)
   }
 
-  function submitUsername(e) {
-    e.preventDefault()
+  function submitUsername(username) {
     createPlayer(username)
   }
 
   return (
-    <form className="registerDialog">
-      <h1>What is your name?!</h1>
+    <form 
+      className="registerDialog"
+      onSubmit={e => {
+        e.preventDefault() 
+        submitUsername(username)
+      }}>
+      
       <input 
+        autoFocus
+        placeholder="Enter your username and hit enter..."
         value={username}
         onChange={updateUsername}
-        onSubmit={submitUsername}
         type="text"
         autoComplete="off" 
         name="username" 
         className="registerInput" />
+      <button type="submit" className="submitBtn">
+        Submit
+      </button>
     </form>
   )
 }

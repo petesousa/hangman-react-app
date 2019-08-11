@@ -1,5 +1,4 @@
 import axios from 'axios';
-// import _ from 'lodash';
 
 const HangmanApiConfig = {
   baseUrl: 'http://localhost:8080/hangman',
@@ -17,16 +16,12 @@ class Hangman {
   startLoading = () => this.loading = true;
   finishedLoading = () => this.loading = false;
 
-  // setGame = game  => this.game = game;
-  // setPlayer = player => this.player = player;
-  // updateBills = bills => bills.map(bill => this.bills = [ ...this.bills, bill ]);
-
   async createPlayer(username) {
 
     const { baseUrl, playerUrl } = this.apiConf;
     const createPlayerUrl = baseUrl + playerUrl;
 
-    const playerInfo = { username: "username" };
+    const playerInfo = { username: username };
     const player = await axios.post(createPlayerUrl, playerInfo)
       .then(payload => payload.data);
 
@@ -40,9 +35,17 @@ class Hangman {
     const playerInfo = { playerId: playerId };
 
     const game = await axios.post(createGameUrl, playerInfo)
-      .then(payload => payload.data);
-
-    return game;
+      .then(payload => {
+        return payload.data
+      })
+      .catch(error => {
+        return error.message
+      })
+    if (game === "Request failed with status code 400") {
+      return null;
+    }
+    
+    return game
 
   }
 
