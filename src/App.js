@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react'
+import './App.css'
 
-function App() {
+import HangManBoard from './HangManBoard'
+import Keyboard from './Keyboard'
+import WordBox from './WordBox'
+
+import Hangman from './hangman'
+
+export default function App() {
+
+  const [ player, setPlayer ] = useState({})
+  const [ game, setGame ] = useState({})
+
+  useEffect(() => {
+    Hangman.createPlayer().then(setPlayer)
+  }, [])
+
+  useEffect(() => {
+    Hangman.createGame(player.id).then(setGame);
+  }, [player])
+
+  function guessCharacter(character) {
+    console.log(character);
+    Hangman.guessCharacter(game.id, character).then(game => setGame(game));
+    return;
+  }
+
+  function newGame() {
+    Hangman.createGame(player.id).then(setGame);
+    return;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <main className="App">
+      <HangManBoard newGame={newGame} game={game} player={player} />
+      <WordBox game={game}/>
+      <Keyboard game={game} guessCharacter={guessCharacter}/>
+    </main>
+  )
 }
-
-export default App;
