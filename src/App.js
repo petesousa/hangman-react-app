@@ -4,12 +4,10 @@ import './App.css'
 import Register from './Register'
 
 import Keyboard from './Keyboard'
+import WordsOver from './WordsOver'
+import GamePanel from './GamePanel'
 import WordBox from './WordBox'
 import Hangman from './hangman'
-
-function NextWord({ newGame }) {
-  return <span className="spanNext" onClick={ () => newGame() }>next word</span>
-}
 
 export default function App() {
 
@@ -45,25 +43,15 @@ export default function App() {
     return <Register createPlayer={createPlayer} />
   }
 
-  if (wordsOver) {
-    return (
-      <div className="noMoreWords">
-        <h1>Game Over</h1>
-      </div>
-    )
+  if(wordsOver) {
+    return <WordsOver />
   }
 
   return (
-    <>
-      <main className="App">
-        <div className="gamePanel">
-          { !game.gameOver && <h2 className="guessesLeft">You have { game.guessesLeft } guesses left, { player.username }.</h2> }
-          { game.gameWon && <h3 className="youWon">You won, { player.username }. Contratulations! <NextWord newGame={newGame} /></h3> }
-          { !game.gameWon && game.gameOver && <h3 className="youLost">You lost, { player.username }. We're sorry! <NextWord newGame={newGame} /></h3> } 
-        </div>
-        <WordBox game={game}/>
-        <Keyboard game={game} guessCharacter={guessCharacter}/>
-      </main>
-    </>
+    <main className="App">
+      <GamePanel game={game} player={player} newGame={newGame} />
+      <WordBox game={game}/>
+      <Keyboard game={game} guessCharacter={guessCharacter}/>
+    </main>
   )
 }

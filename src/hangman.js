@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const HangmanApiConfig = {
-  baseUrl: 'http://localhost:8080/hangman',
+  baseUrl: 'https://hangman-java-api.herokuapp.com/hangman',
   gameUrl: '/game',
   playerUrl: '/player'
 }
